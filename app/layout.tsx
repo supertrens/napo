@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Fraunces } from "next/font/google";
 import "./globals.css";
 import { ConvexClientProvider } from "./providers";
@@ -16,6 +16,13 @@ const fraunces = Fraunces({
   axes: ["SOFT", "opsz"],
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  themeColor: "#05071a",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
   title: "Napo Air — An Airline For The Diaspora, By The Diaspora",

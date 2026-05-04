@@ -24,7 +24,7 @@ export function Hero() {
       </div>
 
       <div className="mx-auto max-w-6xl px-5 pt-12 pb-12 sm:pt-20 sm:pb-20">
-        <div className="grid gap-12 lg:grid-cols-[1.25fr_1fr] lg:gap-16 lg:items-start">
+        <div className="grid w-full min-w-0 grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] lg:gap-16 lg:items-start">
           <div className="reveal-up">
             <div className="flex items-center gap-3 text-[11px] uppercase tracking-[0.32em] text-foreground-muted">
               <Pellets />
@@ -32,17 +32,17 @@ export function Hero() {
             </div>
 
             <h1 className="mt-8 font-display tracking-tight">
-              <span className="block text-[44px] leading-[0.96] text-foreground sm:text-[68px] md:text-[84px]">
+              <span className="block text-[36px] leading-[0.98] text-foreground sm:text-[56px] md:text-[72px] lg:text-[84px]">
                 {t.hero.line1}
               </span>
-              <span className="relative mt-1.5 block text-[44px] leading-[0.96] sm:text-[68px] md:text-[84px]">
+              <span className="relative mt-1.5 block text-[36px] leading-[0.98] sm:text-[56px] md:text-[72px] lg:text-[84px]">
                 <span className="display-italic gold-text pr-2">
                   {t.hero.line2}
                 </span>
                 <span className="text-foreground/95">,</span>
                 <UnderlineSwoop />
               </span>
-              <span className="mt-1.5 block text-[44px] leading-[0.96] text-foreground/95 sm:text-[68px] md:text-[84px]">
+              <span className="mt-1.5 block text-[36px] leading-[0.98] text-foreground/95 sm:text-[56px] md:text-[72px] lg:text-[84px]">
                 {t.hero.line3}
               </span>
             </h1>
@@ -90,7 +90,7 @@ export function Hero() {
             </p>
           </div>
 
-          <div className="relative aspect-[5/6] w-full max-w-md justify-self-center reveal-up lg:max-w-none lg:justify-self-end">
+          <div className="relative mx-auto aspect-[5/6] w-full max-w-[320px] reveal-up sm:max-w-sm lg:mx-0 lg:max-w-none lg:justify-self-end">
             <AirplaneArt />
           </div>
         </div>
@@ -157,7 +157,7 @@ function CounterBand({
         className="pointer-events-none absolute -bottom-24 -left-16 h-60 w-60 rounded-full bg-haiti-blue/15 blur-[80px]"
       />
 
-      <div className="grid items-stretch lg:grid-cols-[1.6fr_1fr]">
+      <div className="grid w-full min-w-0 grid-cols-1 items-stretch lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
         <div className="px-7 py-7 sm:px-10 sm:py-9">
           <div className="flex items-center justify-between gap-3">
             <div className="text-[11px] uppercase tracking-[0.28em] text-foreground-muted">

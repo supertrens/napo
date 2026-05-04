@@ -8,6 +8,7 @@ import { TierBadge } from "./tier-badge";
 import { TierLadder } from "./tier-ladder";
 import { cn, formatMoney } from "@/lib/utils";
 import { Loader2, Plane, ShieldCheck, Sparkles } from "lucide-react";
+import { ShareSheet } from "./share-sheet";
 import { motion, AnimatePresence } from "framer-motion";
 import { useT } from "./language-provider";
 
@@ -18,6 +19,7 @@ type Status =
   | { kind: "submitting" }
   | {
       kind: "success";
+      id: string;
       delta: number;
       total: number;
       isReturning: boolean;
@@ -79,6 +81,7 @@ export function PledgeForm() {
       });
       setStatus({
         kind: "success",
+        id: String(result.id),
         delta: result.delta,
         total: result.totalAmount,
         isReturning: result.isReturning,
@@ -103,15 +106,15 @@ export function PledgeForm() {
   return (
     <section
       id="pledge"
-      className="relative mx-auto max-w-6xl scroll-mt-16 px-5 py-16 sm:py-24"
+      className="relative mx-auto w-full max-w-6xl scroll-mt-16 overflow-hidden px-5 py-16 sm:py-24"
     >
-      <div className="grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
+      <div className="grid w-full min-w-0 grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-14">
         <div>
           <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.32em] text-foreground-muted">
             <Sparkles className="h-3 w-3 text-haiti-gold" />
             {t.form.eyebrow}
           </div>
-          <h2 className="mt-4 font-display text-[44px] leading-[0.96] tracking-[-0.025em] sm:text-[56px]">
+          <h2 className="mt-4 font-display text-[34px] leading-[0.98] tracking-[-0.025em] sm:text-[44px] md:text-[56px]">
             {t.form.title1}{" "}
             <span className="display-italic gold-text">{t.form.title2}</span>
             {t.form.titleEnd}
@@ -124,6 +127,7 @@ export function PledgeForm() {
             {status.kind === "success" ? (
               <SuccessCard
                 key="success"
+                id={status.id}
                 name={name}
                 city={city}
                 country={country}
@@ -228,13 +232,14 @@ export function PledgeForm() {
                     ))}
                   </div>
 
-                  <div className="input-premium mt-3 flex items-stretch overflow-hidden rounded-xl">
-                    <span className="flex items-center px-4 text-foreground-muted font-display text-xl">
+                  <div className="input-premium mt-3 flex w-full min-w-0 items-stretch overflow-hidden rounded-xl">
+                    <span className="flex shrink-0 items-center px-4 text-foreground-muted font-display text-xl">
                       $
                     </span>
                     <input
                       inputMode="numeric"
                       pattern="[0-9]*"
+                      size={1}
                       value={amountText}
                       onChange={(e) => {
                         const cleaned = e.target.value.replace(/[^0-9]/g, "");
@@ -242,12 +247,12 @@ export function PledgeForm() {
                         const n = parseInt(cleaned || "0", 10);
                         setAmount(Number.isFinite(n) ? n : 0);
                       }}
-                      className="w-full bg-transparent py-3 pr-4 text-2xl font-display tracking-tight outline-none tabular-nums"
+                      className="w-full min-w-0 bg-transparent py-3 pr-4 text-2xl font-display tracking-tight outline-none tabular-nums"
                       placeholder="100"
                       aria-label={t.form.labels.amount}
                     />
-                    <div className="flex items-center pr-4">
-                      <TierBadge tier={projectedTier} size="sm" showSub />
+                    <div className="flex shrink-0 items-center pr-4">
+                      <TierBadge tier={projectedTier} size="sm" />
                     </div>
                   </div>
                   {amount > 0 && amount < 50 && (
@@ -342,11 +347,12 @@ function Field({
       </span>
       <input
         type={type}
+        size={1}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         autoComplete={autoComplete}
-        className="input-premium mt-1.5 w-full rounded-xl px-4 py-3 text-base placeholder:text-foreground-dim"
+        className="input-premium mt-1.5 w-full min-w-0 rounded-xl px-4 py-3 text-base placeholder:text-foreground-dim"
       />
     </label>
   );
@@ -373,6 +379,7 @@ function ticketCodes(seed: string, pledgeCount: number) {
 }
 
 function SuccessCard({
+  id,
   name,
   city,
   country,
@@ -384,6 +391,7 @@ function SuccessCard({
   onAddMore,
   onClose,
 }: {
+  id: string;
   name: string;
   city: string;
   country: string;
@@ -398,6 +406,10 @@ function SuccessCard({
   const t = useT();
   const next = nextTier(total);
   const codes = ticketCodes(`${name}|${city}|${country}|${total}`, pledgeCount);
+  const shareUrl =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/p/${id}`
+      : `/p/${id}`;
   const tierClass = TIER_CLASS[tier.id] ?? "ECONOMY";
   const dateStr = new Date()
     .toLocaleDateString("en-US", {
@@ -623,8 +635,15 @@ function SuccessCard({
             {t.form.successNext(formatMoney(next.min - total), next.label)}
           </p>
         )}
-        <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <button onClick={onAddMore} className="btn-gold rounded-full px-5 py-2.5 text-sm font-medium">
+        <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row sm:flex-wrap">
+          <ShareSheet
+            shareUrl={shareUrl}
+            composedText={t.share.composedTier(tier.label)}
+          />
+          <button
+            onClick={onAddMore}
+            className="rounded-full border border-border-strong bg-background-elev/40 px-5 py-2.5 text-sm font-medium text-foreground-soft transition-colors hover:border-border-bright"
+          >
             {t.form.addMore}
           </button>
           <button

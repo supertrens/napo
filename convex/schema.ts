@@ -19,4 +19,10 @@ export default defineSchema({
     totalAmount: v.number(),
     totalPledgers: v.number(),
   }),
+
+  rateLimits: defineTable({
+    key: v.string(), // "email:<email>"
+    windowStart: v.number(),
+    count: v.number(),
+  }).index("by_key", ["key"]),
 });

@@ -63,6 +63,12 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   letter-spacing: -0.005em;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+html {
+  background-color: var(--background);
 }
 
 body {

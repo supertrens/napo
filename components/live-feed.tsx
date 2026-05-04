@@ -20,7 +20,7 @@ export function LiveFeed() {
   }, []);
 
   return (
-    <section className="mx-auto max-w-6xl px-5 py-16 sm:py-24">
+    <section className="mx-auto w-full max-w-6xl overflow-hidden px-5 py-16 sm:py-24">
       <div className="flex items-end justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.32em] text-foreground-muted">

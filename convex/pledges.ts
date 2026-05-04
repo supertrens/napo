@@ -4,6 +4,32 @@ import { v } from "convex/values";
 const MIN_PLEDGE = 50;
 const MAX_PLEDGE = 25_000_000;
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+const RATE_WINDOW_MS = 60_000; // 1 minute
+const RATE_MAX = 6; // max 6 attempts per email per minute
+
+async function checkRateLimit(ctx: { db: any }, key: string) {
+  const now = Date.now();
+  const row = await ctx.db
+    .query("rateLimits")
+    .withIndex("by_key", (q: any) => q.eq("key", key))
+    .unique();
+  if (!row) {
+    await ctx.db.insert("rateLimits", {
+      key,
+      windowStart: now,
+      count: 1,
+    });
+    return;
+  }
+  if (now - row.windowStart > RATE_WINDOW_MS) {
+    await ctx.db.patch(row._id, { windowStart: now, count: 1 });
+    return;
+  }
+  if (row.count >= RATE_MAX) {
+    throw new Error("Too many attempts. Try again in a minute.");
+  }
+  await ctx.db.patch(row._id, { count: row.count + 1 });
+}
 
 async function ensureStats(ctx: { db: any }) {
   const row = await ctx.db.query("stats").first();
@@ -36,6 +62,8 @@ export const submit = mutation({
 
     const amount = Math.round(args.amount);
     const now = Date.now();
+
+    await checkRateLimit(ctx, `email:${email}`);
 
     const existing = await ctx.db
       .query("pledges")
@@ -139,6 +167,22 @@ export const top = query({
       country: d.country,
       amount: d.amount,
     }));
+  },
+});
+
+export const publicById = query({
+  args: { id: v.id("pledges") },
+  handler: async (ctx, args) => {
+    const row = await ctx.db.get(args.id);
+    if (!row) return null;
+    return {
+      name: row.name,
+      city: row.city,
+      country: row.country,
+      amount: row.amount,
+      pledgeCount: row.pledgeCount,
+      lastPledgeAt: row.lastPledgeAt,
+    };
   },
 });
 

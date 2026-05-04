@@ -123,6 +123,79 @@ export const messages = {
     toggle: {
       label: "Language",
     },
+    share: {
+      cta: "Share my boarding pass",
+      ctaShort: "Share",
+      title: "Share your ticket",
+      description:
+        "Post your boarding pass anywhere. Anyone who pledges through your link boards too.",
+      copy: "Copy link",
+      copied: "Copied",
+      native: "Share…",
+      twitter: "Post on X",
+      whatsapp: "WhatsApp",
+      facebook: "Facebook",
+      messages: "Messages",
+      composedDefault:
+        "I'm in. Let's buy Spirit Airlines and build an airline for the diaspora. Pledge $50+ ↓",
+      composedTier: (tier: string): string =>
+        `I just boarded as a ${tier}. Let's buy Spirit Airlines and build an airline for the diaspora. Pledge $50+ ↓`,
+    },
+    inviter: {
+      eyebrow: "You were invited",
+      headline: (name: string, city: string): string =>
+        `${name} from ${city} just boarded.`,
+      subhead: "Will you?",
+      tierLabel: "boarded as a",
+      cta: "Board with them",
+    },
+    trust: {
+      eyebrow: "Why this matters",
+      headline: "The diaspora has the capital. The fleet exists.",
+      sub: "Spirit's gates, planes, and routes are tangible — not vaporware. We're rallying word-of-mouth capital to put them to work for our people.",
+      pillars: [
+        {
+          k: "Real assets",
+          v: "Actual aircraft, gates, and slots — already in the world.",
+        },
+        {
+          k: "Word first, money later",
+          v: "We collect commitments only. No charge until the raise opens.",
+        },
+        {
+          k: "Owned together",
+          v: "Every pledger is a stakeholder in the story being written.",
+        },
+      ],
+      founderLine: (name: string): string =>
+        `An idea by ${name} — rallied by the diaspora.`,
+    },
+    faq: {
+      eyebrow: "Common questions",
+      headline: "Before you board",
+      items: [
+        {
+          q: "Is this real?",
+          a: "Yes. This is a coordinated pledge drive — a public commitment to back a Haitian-led acquisition once the raise opens. No money moves through this site today.",
+        },
+        {
+          q: "When do I actually pay?",
+          a: "Only after the raise structure is finalized and you receive a private invitation with secure instructions. You can withdraw your pledge any time before then.",
+        },
+        {
+          q: "What if we don't reach $25M?",
+          a: "Pledges are non-binding. If we don't hit the threshold, no one pays anything and the pledge book is archived. The signal of demand still matters.",
+        },
+        {
+          q: "What do I get if it succeeds?",
+          a: "A stake proportional to your commitment, recognition by tier (Sipòtè → Fondatè), and a permanent place on the founders' wall.",
+        },
+        {
+          q: "Where is my data stored?",
+          a: "On Convex, a database we control directly. Your email is never sold or shared. We'll only contact you with raise-related updates.",
+        },
+      ],
+    },
     tierBlurbs: {
       fondate: "First names engraved on a commemorative plaque on the aircraft.",
       pilye: "Priority access to all official events.",
@@ -247,6 +320,79 @@ export const messages = {
     },
     toggle: {
       label: "Lang",
+    },
+    share: {
+      cta: "Pataje pas anbakman m",
+      ctaShort: "Pataje",
+      title: "Pataje tikè w",
+      description:
+        "Mete pas anbakman w nan rezo sosyal. Tout moun ki pledje atravè lyen w lan ap anbake tou.",
+      copy: "Kopye lyen",
+      copied: "Kopye",
+      native: "Pataje…",
+      twitter: "Pibliye sou X",
+      whatsapp: "WhatsApp",
+      facebook: "Facebook",
+      messages: "Mesaj",
+      composedDefault:
+        "Mwen ladan l. Ann achte Spirit Airlines pou nou bati yon konpayi avyon pou dyaspora a. Pledje $50+ ↓",
+      composedTier: (tier: string): string =>
+        `Mwen fenk anbake kòm yon ${tier}. Ann achte Spirit Airlines pou nou bati yon konpayi avyon pou dyaspora a. Pledje $50+ ↓`,
+    },
+    inviter: {
+      eyebrow: "Yo envite w",
+      headline: (name: string, city: string): string =>
+        `${name} soti ${city} fenk anbake.`,
+      subhead: "Èske w ap fè menm jan an?",
+      tierLabel: "anbake kòm yon",
+      cta: "Anbake avèk yo",
+    },
+    trust: {
+      eyebrow: "Poukisa sa enpòtan",
+      headline: "Dyaspora a gen lajan an. Avyon yo egziste.",
+      sub: "Baryè, avyon, ak wout Spirit yo egziste — se pa yon rèv. N ap rasanble kapital pawòl pou mete yo travay pou pèp nou.",
+      pillars: [
+        {
+          k: "Byen reyèl",
+          v: "Avyon, baryè, ak slot ki gentan egziste nan mond lan.",
+        },
+        {
+          k: "Pawòl anvan, lajan apre",
+          v: "Nou ranmase komitman sèlman. Pa gen chaj jiskaske kanpay la louvri.",
+        },
+        {
+          k: "Posede ansanm",
+          v: "Chak pledjè se yon aksyonè nan istwa a.",
+        },
+      ],
+      founderLine: (name: string): string =>
+        `Yon ide ${name} — pote pa dyaspora a.`,
+    },
+    faq: {
+      eyebrow: "Kesyon yo souvan",
+      headline: "Anvan w anbake",
+      items: [
+        {
+          q: "Èske se vre?",
+          a: "Wi. Se yon kanpay pledj ofisyèl — yon pwomès piblik pou sipòte yon akizisyon Spirit Airlines an Ayisyen lè kanpay la louvri. Pa gen lajan k ap deplase nan sit la jodi a.",
+        },
+        {
+          q: "Kilè m ap peye toutbon?",
+          a: "Sèlman apre estrikti kanpay la finalize epi w resevwa yon envitasyon prive ak enstriksyon an sekirite. Ou ka retire pledj ou nenpòt lè anvan sa.",
+        },
+        {
+          q: "E si nou pa rive $25M?",
+          a: "Pledj yo pa obligatwa. Si nou pa rive, pèsonn pa peye anyen e liv pledj la fèmen. Sinyal demand lan toujou enpòtan.",
+        },
+        {
+          q: "Kisa m jwenn si reyalize?",
+          a: "Yon aksyon ki pwopòsyonèl ak komitman ou, rekonesans pa nivo (Sipòtè → Fondatè), ak yon plas pèmanan sou miray fondatè a.",
+        },
+        {
+          q: "Kote done m yo estoke?",
+          a: "Sou Convex, yon baz done nou kontwole dirèkteman. Imèl ou pa janm vann ni pataje. N ap kontakte w sèlman pou nouvèl kanpay la.",
+        },
+      ],
     },
     tierBlurbs: {
       fondate: "Premye non yo k ap genyen plak komemoratif sou avyon an.",
