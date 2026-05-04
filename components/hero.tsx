@@ -120,6 +120,8 @@ function CounterBand({
   pledgers,
   goal,
   percent,
+  cities,
+  countries,
   liveLabel,
   totalLabel,
   pledgersLabel,
@@ -130,6 +132,8 @@ function CounterBand({
   pledgers: number;
   goal: number;
   percent: number;
+  cities: number;
+  countries: number;
   liveLabel: string;
   totalLabel: string;
   pledgersLabel: string;
@@ -210,6 +214,30 @@ function CounterBand({
                 </span>
               </span>
             </div>
+            {(cities > 0 || countries > 0) && (
+              <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] uppercase tracking-[0.18em] text-foreground-dim">
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="h-1 w-1 rounded-full bg-haiti-gold" />
+                  <AnimatedCounter
+                    value={cities}
+                    className="text-foreground-soft tabular-nums"
+                  />{" "}
+                  cities
+                </span>
+                <span className="opacity-40">·</span>
+                <span className="inline-flex items-center gap-1.5">
+                  <AnimatedCounter
+                    value={countries}
+                    className="text-foreground-soft tabular-nums"
+                  />{" "}
+                  countries
+                </span>
+                <span className="opacity-40">·</span>
+                <span>
+                  <span className="text-foreground-soft">$50</span> minimum
+                </span>
+              </div>
+            )}
           </div>
         </div>
 

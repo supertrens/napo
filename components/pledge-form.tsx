@@ -7,7 +7,7 @@ import { getTier, nextTier, progressToNext } from "@/lib/tiers";
 import { TierBadge } from "./tier-badge";
 import { TierLadder } from "./tier-ladder";
 import { cn, formatMoney } from "@/lib/utils";
-import { Loader2, ShieldCheck, Sparkles } from "lucide-react";
+import { Loader2, Plane, ShieldCheck, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useT } from "./language-provider";
 
@@ -124,6 +124,10 @@ export function PledgeForm() {
             {status.kind === "success" ? (
               <SuccessCard
                 key="success"
+                name={name}
+                city={city}
+                country={country}
+                pledgeCount={status.pledgeCount}
                 delta={status.delta}
                 total={status.total}
                 isReturning={status.isReturning}
@@ -348,7 +352,31 @@ function Field({
   );
 }
 
+const TIER_CLASS: Record<string, string> = {
+  fondate: "FOUNDER",
+  pilye: "DIAMOND",
+  patron: "FIRST",
+  bilder: "BUSINESS",
+  sipote: "ECONOMY",
+};
+
+function ticketCodes(seed: string, pledgeCount: number) {
+  let h = 5381;
+  for (let i = 0; i < seed.length; i++) h = ((h << 5) + h + seed.charCodeAt(i)) | 0;
+  const abs = Math.abs(h);
+  const flightNum = String(abs % 9000 + 1000).padStart(4, "0");
+  const seatRow = (abs >> 4) % 38 + 1;
+  const seatLetter = "ABCDEF"[(abs >> 8) % 6];
+  const seat = `${seatRow}${seatLetter}`;
+  const gate = ["DSP", "AYI", "PAP", "JFK", "MIA"][(abs >> 12) % 5];
+  return { flightNum, seat, gate, pledgeCount };
+}
+
 function SuccessCard({
+  name,
+  city,
+  country,
+  pledgeCount,
   delta,
   total,
   isReturning,
@@ -356,6 +384,10 @@ function SuccessCard({
   onAddMore,
   onClose,
 }: {
+  name: string;
+  city: string;
+  country: string;
+  pledgeCount: number;
   delta: number;
   total: number;
   isReturning: boolean;
@@ -365,54 +397,305 @@ function SuccessCard({
 }) {
   const t = useT();
   const next = nextTier(total);
+  const codes = ticketCodes(`${name}|${city}|${country}|${total}`, pledgeCount);
+  const tierClass = TIER_CLASS[tier.id] ?? "ECONOMY";
+  const dateStr = new Date()
+    .toLocaleDateString("en-US", {
+      day: "2-digit",
+      month: "short",
+      year: "2-digit",
+    })
+    .toUpperCase()
+    .replace(/,/g, "");
+
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.97, y: 8 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      exit={{ opacity: 0, y: -4 }}
-      transition={{ duration: 0.35, ease: [0.2, 0.8, 0.2, 1] }}
-      className="glass mt-8 rounded-2xl p-7 text-center"
-      style={{ boxShadow: `0 0 60px ${tier.glow}` }}
+      initial={{ opacity: 0, y: 16, scale: 0.97 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: -8 }}
+      transition={{ duration: 0.55, ease: [0.2, 0.8, 0.2, 1] }}
+      className="surface-elev relative mt-8 overflow-hidden rounded-3xl"
+      style={{
+        boxShadow: `0 40px 80px -20px rgba(5,7,26,0.7), 0 0 60px -10px ${tier.glow}`,
+      }}
     >
-      <div
-        className="mx-auto flex h-16 w-16 items-center justify-center rounded-full"
-        style={{
-          background: `linear-gradient(135deg, ${tier.accent}33 0%, ${tier.accent}10 100%)`,
-          border: `1px solid ${tier.accent}66`,
-        }}
+      {/* Flag stripe rail */}
+      <span
+        aria-hidden
+        className="absolute inset-y-0 left-0 w-1 flag-stripe"
+      />
+
+      {/* Watermark */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 flex items-center justify-center"
       >
-        <Sparkles className="h-7 w-7" style={{ color: tier.accent }} />
+        <span
+          className="font-display tracking-[-0.04em] -rotate-[10deg] select-none"
+          style={{
+            fontSize: "clamp(120px, 22vw, 220px)",
+            color: tier.accent,
+            opacity: 0.06,
+            fontWeight: 700,
+            lineHeight: 1,
+          }}
+        >
+          {isReturning ? "BOARDED" : "PROMISED"}
+        </span>
+      </span>
+
+      <div className="relative grid grid-cols-1 sm:grid-cols-[1fr_auto]">
+        {/* Main ticket */}
+        <div className="px-7 py-7 sm:px-10 sm:py-9">
+          {/* Header */}
+          <div className="flex items-center justify-between gap-4 text-[10px] uppercase tracking-[0.32em] text-foreground-dim">
+            <span className="flex items-center gap-2">
+              <Plane className="h-3 w-3 text-haiti-gold" />
+              <span className="text-haiti-gold font-medium">Napo Air</span>
+              <span className="opacity-50">·</span>
+              <span>Boarding Pass</span>
+            </span>
+            <span className="font-mono text-foreground-muted">
+              NA-{codes.flightNum}
+            </span>
+          </div>
+
+          {/* Passenger */}
+          <div className="mt-7">
+            <div className="text-[10px] uppercase tracking-[0.32em] text-foreground-dim">
+              Passenger
+            </div>
+            <div className="mt-1.5 font-display text-2xl font-medium uppercase tracking-[-0.01em] sm:text-[28px]">
+              {name || "Anonymous"}
+            </div>
+          </div>
+
+          {/* Route */}
+          <div className="mt-7 grid grid-cols-[1fr_auto_1fr] items-end gap-4">
+            <div className="min-w-0">
+              <div className="text-[10px] uppercase tracking-[0.32em] text-foreground-dim">
+                From
+              </div>
+              <div className="mt-1.5 truncate font-display text-xl uppercase tracking-[-0.01em] text-foreground-soft sm:text-2xl">
+                {city || "—"}
+              </div>
+              <div className="text-[11px] uppercase tracking-[0.18em] text-foreground-muted">
+                {country || "—"}
+              </div>
+            </div>
+            <div className="flex flex-col items-center pb-1.5">
+              <Plane className="h-5 w-5 text-haiti-gold" />
+              <svg
+                viewBox="0 0 80 6"
+                className="mt-2 h-1.5 w-16 text-haiti-gold/40"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1"
+                strokeDasharray="2 3"
+              >
+                <line x1="0" y1="3" x2="80" y2="3" />
+              </svg>
+            </div>
+            <div className="min-w-0 text-right">
+              <div className="text-[10px] uppercase tracking-[0.32em] text-foreground-dim">
+                To
+              </div>
+              <div
+                className="display-italic mt-1.5 truncate font-display text-xl tracking-[-0.01em] sm:text-2xl"
+                style={{ color: tier.accent }}
+              >
+                Freedom
+              </div>
+              <div className="text-[11px] uppercase tracking-[0.22em] text-foreground-muted">
+                Ayiti · NA
+              </div>
+            </div>
+          </div>
+
+          {/* Stats grid */}
+          <div className="mt-8 grid grid-cols-2 gap-y-5 sm:grid-cols-4">
+            <TicketCell
+              label="Class"
+              value={tierClass}
+              accent={tier.accent}
+              ranked
+            />
+            <TicketCell label="Fare" value={formatMoney(delta)} mono />
+            <TicketCell label="Seat" value={codes.seat} mono />
+            <TicketCell label="Gate" value={codes.gate} mono />
+          </div>
+        </div>
+
+        {/* Stub */}
+        <div className="relative hidden border-l border-dashed border-border-strong sm:block">
+          {/* Notches */}
+          <span
+            aria-hidden
+            className="absolute -left-2 top-0 h-4 w-4 rounded-full bg-background"
+          />
+          <span
+            aria-hidden
+            className="absolute -left-2 bottom-0 h-4 w-4 rounded-full bg-background"
+          />
+          <div className="flex h-full flex-col justify-between px-7 py-9 text-right">
+            <div>
+              <div className="text-[10px] uppercase tracking-[0.32em] text-foreground-dim">
+                Tier
+              </div>
+              <div
+                className="font-display display-italic mt-2 text-2xl tracking-[-0.02em]"
+                style={{ color: tier.accent }}
+              >
+                {tier.label}
+              </div>
+              <div className="text-[10px] uppercase tracking-[0.22em] text-foreground-muted">
+                {tier.sublabel}
+              </div>
+            </div>
+            <div>
+              <div className="text-[10px] uppercase tracking-[0.32em] text-foreground-dim">
+                Total commitment
+              </div>
+              <div className="mt-1.5 font-display text-xl tabular-nums tracking-tight">
+                {formatMoney(total)}
+              </div>
+              {pledgeCount > 1 && (
+                <div className="text-[10px] uppercase tracking-[0.22em] text-foreground-muted">
+                  Across {pledgeCount} flights
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="mt-5 font-display text-3xl tracking-tight sm:text-4xl">
-        {isReturning ? t.form.successReturning : t.form.successNew}
+
+      {/* Perforation + barcode */}
+      <div className="relative border-t border-dashed border-border-strong">
+        <span
+          aria-hidden
+          className="absolute -top-2 -left-2 h-4 w-4 rounded-full bg-background"
+        />
+        <span
+          aria-hidden
+          className="absolute -top-2 -right-2 h-4 w-4 rounded-full bg-background"
+        />
+        <div className="flex flex-wrap items-center justify-between gap-4 px-7 py-4 sm:px-10">
+          <Barcode seed={codes.flightNum + codes.seat} />
+          <div className="flex flex-wrap items-center gap-3 text-[10px] uppercase tracking-[0.28em] text-foreground-dim">
+            <span>
+              <span className="text-foreground-muted">Date</span>{" "}
+              <span className="font-mono text-foreground-soft">{dateStr}</span>
+            </span>
+            <span className="opacity-40">·</span>
+            <span>
+              <span className="text-foreground-muted">Status</span>{" "}
+              <span
+                className="font-mono"
+                style={{ color: tier.accent }}
+              >
+                {isReturning ? "RE-BOARDED" : "PROMISED"}
+              </span>
+            </span>
+            <span className="opacity-40 hidden sm:inline">·</span>
+            <span className="hidden sm:inline">
+              <span className="text-foreground-muted">ETD</span>{" "}
+              <span className="font-mono text-foreground-soft">SOON</span>
+            </span>
+          </div>
+        </div>
       </div>
-      <p className="mt-2 text-foreground-muted">
-        {isReturning
-          ? t.form.successDescReturning(formatMoney(delta), formatMoney(total))
-          : t.form.successDescNew(formatMoney(delta), tier.label)}
-      </p>
-      <div className="mt-5 flex justify-center">
-        <TierBadge tier={tier} size="md" showSub />
-      </div>
-      {next && (
-        <p className="mt-4 text-xs text-foreground-muted">
-          {t.form.successNext(formatMoney(next.min - total), next.label)}
+
+      {/* Footer message */}
+      <div className="relative border-t border-dashed border-border-strong px-7 py-7 text-center sm:px-10 sm:py-8">
+        <div className="font-display display-italic gold-text text-3xl tracking-[-0.02em] sm:text-4xl">
+          {isReturning ? t.form.successReturning : t.form.successNew}
+        </div>
+        <p className="mt-2 text-sm text-foreground-muted">
+          {isReturning
+            ? t.form.successDescReturning(
+                formatMoney(delta),
+                formatMoney(total),
+              )
+            : t.form.successDescNew(formatMoney(delta), tier.label)}
         </p>
-      )}
-      <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
-        <button
-          onClick={onAddMore}
-          className="rounded-full bg-haiti-gold px-5 py-2.5 text-sm font-medium text-[#0a0e27] transition-all hover:scale-[1.02]"
-        >
-          {t.form.addMore}
-        </button>
-        <button
-          onClick={onClose}
-          className="text-sm text-foreground-muted transition-colors hover:text-foreground"
-        >
-          {t.form.done}
-        </button>
+        {next && (
+          <p className="mt-2 text-[11px] uppercase tracking-[0.22em] text-foreground-dim">
+            {t.form.successNext(formatMoney(next.min - total), next.label)}
+          </p>
+        )}
+        <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <button onClick={onAddMore} className="btn-gold rounded-full px-5 py-2.5 text-sm font-medium">
+            {t.form.addMore}
+          </button>
+          <button
+            onClick={onClose}
+            className="text-sm text-foreground-muted transition-colors hover:text-foreground-soft"
+          >
+            {t.form.done}
+          </button>
+        </div>
       </div>
     </motion.div>
+  );
+}
+
+function TicketCell({
+  label,
+  value,
+  accent,
+  mono,
+  ranked,
+}: {
+  label: string;
+  value: string;
+  accent?: string;
+  mono?: boolean;
+  ranked?: boolean;
+}) {
+  return (
+    <div>
+      <div className="text-[10px] uppercase tracking-[0.32em] text-foreground-dim">
+        {label}
+      </div>
+      <div
+        className={cn(
+          "mt-1.5 text-base sm:text-lg font-medium tracking-wide uppercase",
+          mono && "font-mono tabular-nums",
+          ranked && "font-display tracking-[0.04em]",
+        )}
+        style={accent ? { color: accent } : undefined}
+      >
+        {value}
+      </div>
+    </div>
+  );
+}
+
+function Barcode({ seed }: { seed: string }) {
+  // Deterministic stripe pattern from seed
+  let h = 7919;
+  for (let i = 0; i < seed.length; i++) h = ((h << 5) + h + seed.charCodeAt(i)) | 0;
+  const bars: { w: number; opacity: number }[] = [];
+  let x = h;
+  for (let i = 0; i < 38; i++) {
+    x = (x * 1103515245 + 12345) & 0x7fffffff;
+    const w = 1 + (x % 4);
+    const opacity = 0.5 + ((x >> 5) % 50) / 100;
+    bars.push({ w, opacity });
+  }
+  return (
+    <div className="flex h-7 items-end gap-[2px]">
+      {bars.map((b, i) => (
+        <span
+          key={i}
+          className="bg-foreground-soft"
+          style={{
+            width: `${b.w}px`,
+            height: "100%",
+            opacity: b.opacity,
+          }}
+        />
+      ))}
+    </div>
   );
 }
