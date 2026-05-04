@@ -3,6 +3,7 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { Hero } from "@/components/hero";
 import { LiveFeed } from "@/components/live-feed";
+import { Changelog } from "@/components/changelog";
 import { PledgeForm } from "@/components/pledge-form";
 import { PledgeTicker } from "@/components/pledge-ticker";
 import { InviterBanner } from "@/components/inviter-banner";
@@ -93,6 +94,7 @@ export default async function PledgerPage({
         <PledgeForm />
         <Divider />
         <LiveFeed />
+        <Changelog />
         <Manifesto />
         <Faq />
       </main>

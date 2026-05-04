@@ -74,24 +74,38 @@ export const submit = mutation({
 
     if (existing) {
       const newAmount = existing.amount + amount;
+      const newPledgeCount = existing.pledgeCount + 1;
+      const newCumulativeTotal = stats.totalAmount + amount;
       await ctx.db.patch(existing._id, {
         amount: newAmount,
-        pledgeCount: existing.pledgeCount + 1,
+        pledgeCount: newPledgeCount,
         lastPledgeAt: now,
         name,
         city,
         country,
       });
       await ctx.db.patch(stats._id, {
-        totalAmount: stats.totalAmount + amount,
+        totalAmount: newCumulativeTotal,
         totalPledgers: stats.totalPledgers,
+      });
+      await ctx.db.insert("pledgeEvents", {
+        pledgeId: existing._id,
+        name,
+        city,
+        country,
+        delta: amount,
+        cumulativeAmount: newAmount,
+        pledgeCount: newPledgeCount,
+        cumulativeTotal: newCumulativeTotal,
+        isReturning: true,
+        createdAt: now,
       });
       return {
         id: existing._id,
         totalAmount: newAmount,
         delta: amount,
         isReturning: true,
-        pledgeCount: existing.pledgeCount + 1,
+        pledgeCount: newPledgeCount,
       };
     }
 
@@ -104,9 +118,22 @@ export const submit = mutation({
       pledgeCount: 1,
       lastPledgeAt: now,
     });
+    const newCumulativeTotal = stats.totalAmount + amount;
     await ctx.db.patch(stats._id, {
-      totalAmount: stats.totalAmount + amount,
+      totalAmount: newCumulativeTotal,
       totalPledgers: stats.totalPledgers + 1,
+    });
+    await ctx.db.insert("pledgeEvents", {
+      pledgeId: id,
+      name,
+      city,
+      country,
+      delta: amount,
+      cumulativeAmount: amount,
+      pledgeCount: 1,
+      cumulativeTotal: newCumulativeTotal,
+      isReturning: false,
+      createdAt: now,
     });
     return {
       id,
@@ -115,6 +142,31 @@ export const submit = mutation({
       isReturning: false,
       pledgeCount: 1,
     };
+  },
+});
+
+export const events = query({
+  args: { limit: v.optional(v.number()) },
+  handler: async (ctx, args) => {
+    const limit = Math.min(Math.max(args.limit ?? 30, 1), 200);
+    const docs = await ctx.db
+      .query("pledgeEvents")
+      .withIndex("by_createdAt")
+      .order("desc")
+      .take(limit);
+    return docs.map((e) => ({
+      id: e._id,
+      pledgeId: e.pledgeId,
+      name: e.name,
+      city: e.city,
+      country: e.country,
+      delta: e.delta,
+      cumulativeAmount: e.cumulativeAmount,
+      pledgeCount: e.pledgeCount,
+      cumulativeTotal: e.cumulativeTotal,
+      isReturning: e.isReturning,
+      createdAt: e.createdAt,
+    }));
   },
 });
 

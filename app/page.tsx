@@ -1,5 +1,6 @@
 import { Hero } from "@/components/hero";
 import { LiveFeed } from "@/components/live-feed";
+import { Changelog } from "@/components/changelog";
 import { PledgeForm } from "@/components/pledge-form";
 import { PledgeTicker } from "@/components/pledge-ticker";
 import { Manifesto } from "@/components/manifesto";
@@ -21,6 +22,7 @@ export default function Home() {
         <PledgeForm />
         <Divider />
         <LiveFeed />
+        <Changelog />
         <Manifesto />
         <Faq />
       </main>

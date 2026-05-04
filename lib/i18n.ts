@@ -170,6 +170,23 @@ export const messages = {
       founderLine: (name: string): string =>
         `An idea by ${name} — rallied by the diaspora.`,
     },
+    changelog: {
+      eyebrow: "How we got here",
+      headline1: "The rise of the",
+      headline2: "pledge book",
+      headlineEnd: ".",
+      sub: "Every commitment, in order. The running total shows how the diaspora reached the current number.",
+      boarded: "boarded",
+      added: "added",
+      from: "from",
+      firstFlight: "first flight",
+      flights: (n: number): string =>
+        n === 1 ? "1 flight" : `${n} flights`,
+      runningTotal: "running total",
+      empty: "No commitments yet — be the first.",
+      showMore: "Show earlier",
+      showLess: "Show fewer",
+    },
     faq: {
       eyebrow: "Common questions",
       headline: "Before you board",
@@ -367,6 +384,23 @@ export const messages = {
       ],
       founderLine: (name: string): string =>
         `Yon ide ${name} — pote pa dyaspora a.`,
+    },
+    changelog: {
+      eyebrow: "Kòman nou rive la",
+      headline1: "Kwasans",
+      headline2: "liv pledj la",
+      headlineEnd: ".",
+      sub: "Chak komitman, nan lòd. Total k ap mache montre kijan dyaspora a rive nan chif kounye a.",
+      boarded: "anbake",
+      added: "ajoute",
+      from: "soti",
+      firstFlight: "premye vòl",
+      flights: (n: number): string =>
+        n === 1 ? "1 vòl" : `${n} vòl`,
+      runningTotal: "total k ap mache",
+      empty: "Pa gen komitman ankò — vin premye a.",
+      showMore: "Wè anvan",
+      showLess: "Mwens",
     },
     faq: {
       eyebrow: "Kesyon yo souvan",
