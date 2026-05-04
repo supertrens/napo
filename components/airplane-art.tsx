@@ -2,18 +2,32 @@
 
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+
+const ROTATE_MS = 3800;
 
 export function AirplaneArt() {
   const totals = useQuery(api.pledges.totals);
-  const recent = useQuery(api.pledges.recent, { limit: 1 });
+  const recent = useQuery(api.pledges.recent, { limit: 5 });
 
   const passengers = totals?.totalPledgers ?? 0;
   const passengersDisplay =
     passengers > 0 ? passengers.toLocaleString("en-US") : "—";
   const flightNumber =
     passengers > 0 ? String(passengers).padStart(4, "0") : "0000";
-  const latest = recent?.[0];
-  const lastJoinedCity = latest?.city ?? null;
+
+  const [cursor, setCursor] = useState(0);
+  useEffect(() => {
+    if (!recent || recent.length <= 1) return;
+    const id = setInterval(
+      () => setCursor((c) => (c + 1) % recent.length),
+      ROTATE_MS,
+    );
+    return () => clearInterval(id);
+  }, [recent]);
+
+  const spotlight = recent && recent.length > 0 ? recent[cursor % recent.length] : null;
 
   return (
     <div
@@ -134,16 +148,16 @@ export function AirplaneArt() {
           />
         </line>
 
-        <g>
+        <g transform="translate(380 220) rotate(-18)">
           <animateTransform
             attributeName="transform"
             type="translate"
-            values="0 0; 0 -8; 0 0"
+            values="0 0; 0 -6; 0 0"
             dur="6.5s"
             repeatCount="indefinite"
+            additive="sum"
           />
-          <g transform="translate(380 220) rotate(-18)">
-            <ellipse cx="0" cy="0" rx="92" ry="10" fill="url(#planeBody)" />
+          <ellipse cx="0" cy="0" rx="92" ry="10" fill="url(#planeBody)" />
           <path
             d="M 92 0 Q 110 -2, 120 0 Q 110 2, 92 0 Z"
             fill="#f7dca0"
@@ -177,7 +191,6 @@ export function AirplaneArt() {
             fill="rgba(13, 18, 50, 0.85)"
           />
           <ellipse cx="-10" cy="-4" rx="60" ry="2" fill="rgba(255,255,255,0.18)" />
-          </g>
         </g>
 
         <g fill="rgba(244, 236, 216, 0.7)">
@@ -228,21 +241,34 @@ export function AirplaneArt() {
               <div className="text-2xl text-foreground-soft">Ayiti</div>
             </div>
           </div>
-          <div className="mt-2 flex items-center justify-between text-foreground-dim">
-            <span className="normal-case tracking-normal text-foreground-muted">
+          <div className="mt-2 flex items-center justify-between gap-3 text-foreground-dim">
+            <span className="min-w-0 flex-1 normal-case tracking-normal text-foreground-muted">
               <span className="font-medium tabular-nums text-foreground-soft">
                 {passengersDisplay}
               </span>{" "}
-              passengers boarded
-              {lastJoinedCity && (
+              boarded
+              {spotlight && (
                 <span className="hidden sm:inline">
                   {" "}
-                  · last from{" "}
-                  <span className="text-foreground-soft">{lastJoinedCity}</span>
+                  ·{" "}
+                  <span className="relative inline-flex h-[1em] min-w-[6ch] overflow-hidden align-baseline">
+                    <AnimatePresence mode="popLayout" initial={false}>
+                      <motion.span
+                        key={spotlight.id + ":" + cursor}
+                        initial={{ y: "100%", opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: "-100%", opacity: 0 }}
+                        transition={{ duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }}
+                        className="inline-block whitespace-nowrap text-foreground-soft"
+                      >
+                        {spotlight.city}
+                      </motion.span>
+                    </AnimatePresence>
+                  </span>
                 </span>
               )}
             </span>
-            <span className="font-mono">ETD: SOON</span>
+            <span className="font-mono whitespace-nowrap">ETD: SOON</span>
           </div>
         </div>
       </div>

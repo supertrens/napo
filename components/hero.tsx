@@ -11,6 +11,7 @@ import { AirplaneArt } from "./airplane-art";
 export function Hero() {
   const t = useT();
   const totals = useQuery(api.pledges.totals);
+  const geo = useQuery(api.pledges.geography);
   const total = totals?.totalAmount ?? 0;
   const pledgers = totals?.totalPledgers ?? 0;
   const goal = totals?.goal ?? 25_000_000;
@@ -100,6 +101,8 @@ export function Hero() {
             pledgers={pledgers}
             goal={goal}
             percent={percent}
+            cities={geo?.cities ?? 0}
+            countries={geo?.countries ?? 0}
             liveLabel={t.hero.live}
             totalLabel={t.hero.totalPledged}
             pledgersLabel={t.hero.pledgers(pledgers)}

@@ -142,6 +142,20 @@ export const top = query({
   },
 });
 
+export const geography = query({
+  args: {},
+  handler: async (ctx) => {
+    const all = await ctx.db.query("pledges").collect();
+    const cities = new Set<string>();
+    const countries = new Set<string>();
+    for (const p of all) {
+      if (p.city) cities.add(`${p.city.toLowerCase()}|${p.country.toLowerCase()}`);
+      if (p.country) countries.add(p.country.toLowerCase());
+    }
+    return { cities: cities.size, countries: countries.size };
+  },
+});
+
 export const lookupByEmail = query({
   args: { email: v.string() },
   handler: async (ctx, args) => {

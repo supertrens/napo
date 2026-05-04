@@ -20,8 +20,8 @@ type Notice = {
   bornAt: number;
 };
 
-const VISIBLE_MS = 6500;
-const MAX_VISIBLE = 3;
+const VISIBLE_MS = 5000;
+const MAX_VISIBLE = 1;
 
 export function PledgeTicker() {
   const t = useT();
