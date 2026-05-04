@@ -103,20 +103,20 @@ export function PledgeForm() {
   return (
     <section
       id="pledge"
-      className="relative mx-auto max-w-6xl scroll-mt-12 px-5 py-12 sm:py-20"
+      className="relative mx-auto max-w-6xl scroll-mt-16 px-5 py-16 sm:py-24"
     >
-      <div className="grid gap-8 lg:grid-cols-[1.15fr_1fr]">
+      <div className="grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
         <div>
-          <div className="flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-foreground-muted">
-            <Sparkles className="h-3.5 w-3.5 text-haiti-gold" />
+          <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.32em] text-foreground-muted">
+            <Sparkles className="h-3 w-3 text-haiti-gold" />
             {t.form.eyebrow}
           </div>
-          <h2 className="mt-3 font-display text-4xl tracking-tight sm:text-5xl">
+          <h2 className="mt-4 font-display text-[44px] leading-[0.96] tracking-[-0.025em] sm:text-[56px]">
             {t.form.title1}{" "}
-            <span className="gold-text">{t.form.title2}</span>
+            <span className="display-italic gold-text">{t.form.title2}</span>
             {t.form.titleEnd}
           </h2>
-          <p className="mt-3 max-w-xl text-foreground-muted">
+          <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-foreground-muted sm:text-[17px]">
             {t.form.subtitle}
           </p>
 
@@ -139,7 +139,7 @@ export function PledgeForm() {
                 exit={{ opacity: 0, y: -4 }}
                 transition={{ duration: 0.25 }}
                 onSubmit={handleSubmit}
-                className="glass mt-8 rounded-2xl p-5 sm:p-7"
+                className="surface-elev mt-8 rounded-3xl p-6 sm:p-8"
               >
                 {existing && (
                   <div
@@ -224,7 +224,7 @@ export function PledgeForm() {
                     ))}
                   </div>
 
-                  <div className="mt-3 flex items-stretch overflow-hidden rounded-xl border border-border-strong bg-background-elev/40 focus-within:border-haiti-gold/60 focus-within:ring-2 focus-within:ring-haiti-gold/20">
+                  <div className="input-premium mt-3 flex items-stretch overflow-hidden rounded-xl">
                     <span className="flex items-center px-4 text-foreground-muted font-display text-xl">
                       $
                     </span>
@@ -271,12 +271,7 @@ export function PledgeForm() {
                 <button
                   type="submit"
                   disabled={!canSubmit}
-                  className={cn(
-                    "mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 font-medium transition-all",
-                    canSubmit
-                      ? "bg-haiti-gold text-[#0a0e27] hover:scale-[1.01] hover:shadow-[0_0_30px_rgba(233,196,106,0.4)] pulse-glow"
-                      : "bg-white/10 text-foreground-muted cursor-not-allowed",
-                  )}
+                  className="btn-gold mt-7 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-4 text-sm font-medium tracking-wide"
                 >
                   {status.kind === "submitting" ? (
                     <>
@@ -347,7 +342,7 @@ function Field({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         autoComplete={autoComplete}
-        className="mt-1.5 w-full rounded-xl border border-border-strong bg-background-elev/40 px-4 py-3 text-base outline-none transition-colors placeholder:text-foreground-dim focus:border-haiti-gold/60 focus:ring-2 focus:ring-haiti-gold/20"
+        className="input-premium mt-1.5 w-full rounded-xl px-4 py-3 text-base placeholder:text-foreground-dim"
       />
     </label>
   );

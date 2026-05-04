@@ -60,7 +60,7 @@ export function PledgeTicker() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.97 }}
             transition={{ duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }}
-            className="glass pointer-events-auto flex items-center gap-3 rounded-full px-4 py-2.5 shadow-[0_8px_40px_rgba(0,0,0,0.5)]"
+            className="surface pointer-events-auto flex items-center gap-3 rounded-full px-4 py-2.5"
           >
             <span
               className="flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold"

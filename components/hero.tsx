@@ -4,8 +4,9 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { AnimatedCounter } from "./animated-counter";
 import { formatMoney } from "@/lib/utils";
-import { ArrowDown, Plane } from "lucide-react";
+import { ArrowDown, ArrowUpRight, Plane } from "lucide-react";
 import { useT } from "./language-provider";
+import { AirplaneArt } from "./airplane-art";
 
 export function Hero() {
   const t = useT();
@@ -17,41 +18,84 @@ export function Hero() {
 
   return (
     <section className="relative isolate overflow-hidden">
-      <BackdropArt />
-
       <div className="pointer-events-none absolute left-0 top-0 hidden h-full w-1.5 sm:block">
-        <div className="flag-stripe h-full w-full opacity-80" />
+        <div className="flag-stripe h-full w-full" />
       </div>
 
-      <div className="mx-auto max-w-6xl px-5 pt-14 pb-12 sm:pt-24 sm:pb-20">
-        <div className="flex items-center gap-2.5 text-[11px] uppercase tracking-[0.28em] text-foreground-muted">
-          <Pellets />
-          <span>{t.hero.eyebrow}</span>
+      <div className="mx-auto max-w-6xl px-5 pt-12 pb-12 sm:pt-20 sm:pb-20">
+        <div className="grid gap-12 lg:grid-cols-[1.25fr_1fr] lg:gap-16 lg:items-start">
+          <div className="reveal-up">
+            <div className="flex items-center gap-3 text-[11px] uppercase tracking-[0.32em] text-foreground-muted">
+              <Pellets />
+              <span className="font-medium">{t.hero.eyebrow}</span>
+            </div>
+
+            <h1 className="mt-8 font-display tracking-tight">
+              <span className="block text-[44px] leading-[0.96] text-foreground sm:text-[68px] md:text-[84px]">
+                {t.hero.line1}
+              </span>
+              <span className="relative mt-1.5 block text-[44px] leading-[0.96] sm:text-[68px] md:text-[84px]">
+                <span className="display-italic gold-text pr-2">
+                  {t.hero.line2}
+                </span>
+                <span className="text-foreground/95">,</span>
+                <UnderlineSwoop />
+              </span>
+              <span className="mt-1.5 block text-[44px] leading-[0.96] text-foreground/95 sm:text-[68px] md:text-[84px]">
+                {t.hero.line3}
+              </span>
+            </h1>
+
+            <div className="mt-8 max-w-xl space-y-3 text-base leading-relaxed text-foreground-muted sm:text-[17px]">
+              <p>{t.hero.lead}</p>
+              <p className="flex gap-3 text-foreground-soft">
+                <span
+                  aria-hidden
+                  className="mt-2.5 h-px w-6 shrink-0 bg-haiti-gold/70"
+                />
+                <span className="italic">{t.hero.leadEm}</span>
+              </p>
+            </div>
+
+            <div className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-3">
+              <a
+                href="#pledge"
+                className="btn-gold group relative inline-flex items-center gap-2.5 overflow-hidden rounded-full px-6 py-3.5 text-sm font-medium tracking-wide"
+              >
+                <Plane className="h-4 w-4" />
+                <span>{t.hero.ctaPrimary}</span>
+                <span className="opacity-50">·</span>
+                <span className="opacity-80">{t.hero.ctaPrimarySub}</span>
+                <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <span
+                  aria-hidden
+                  className="absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-white/30 transition-transform duration-700 group-hover:translate-x-[300%]"
+                />
+              </a>
+              <a
+                href="#how"
+                className="group inline-flex items-center gap-2 text-sm text-foreground-muted transition-colors hover:text-foreground-soft"
+              >
+                <span className="relative">
+                  {t.hero.ctaSecondary}
+                  <span className="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-haiti-gold transition-transform duration-300 group-hover:scale-x-100" />
+                </span>
+                <ArrowDown className="h-3.5 w-3.5 transition-transform group-hover:translate-y-0.5" />
+              </a>
+            </div>
+
+            <p className="mt-6 text-[11px] uppercase tracking-[0.22em] text-foreground-dim">
+              {t.hero.footnote}
+            </p>
+          </div>
+
+          <div className="relative aspect-[5/6] w-full max-w-md justify-self-center reveal-up lg:max-w-none lg:justify-self-end">
+            <AirplaneArt />
+          </div>
         </div>
 
-        <h1 className="mt-7 font-display tracking-tight">
-          <span className="block text-[42px] leading-[1] text-foreground/90 sm:text-7xl md:text-[88px]">
-            {t.hero.line1}
-          </span>
-          <span className="relative mt-1 block text-[42px] leading-[1] sm:text-7xl md:text-[88px]">
-            <span className="gold-text">{t.hero.line2}</span>
-            <UnderlineSwoop />
-          </span>
-          <span className="mt-1 block text-[42px] leading-[1] text-foreground/90 sm:text-7xl md:text-[88px]">
-            {t.hero.line3}
-          </span>
-        </h1>
-
-        <div className="mt-8 grid max-w-3xl gap-2 text-base leading-relaxed text-foreground-muted sm:text-lg">
-          <p>{t.hero.lead}</p>
-          <p className="text-foreground/80">
-            <span className="inline-block h-1 w-6 translate-y-[-4px] bg-haiti-gold/70 mr-2 rounded-full align-middle" />
-            {t.hero.leadEm}
-          </p>
-        </div>
-
-        <div className="mt-12 grid gap-6 lg:grid-cols-[1.55fr_1fr] lg:items-end">
-          <CounterCard
+        <div className="mt-14 sm:mt-20">
+          <CounterBand
             total={total}
             pledgers={pledgers}
             goal={goal}
@@ -60,42 +104,15 @@ export function Hero() {
             totalLabel={t.hero.totalPledged}
             pledgersLabel={t.hero.pledgers(pledgers)}
             goalLabel={t.hero.goal}
+            stats={t.hero.stats}
           />
-
-          <div className="flex flex-col gap-4">
-            <a
-              href="#pledge"
-              className="group relative inline-flex items-center justify-center gap-2.5 overflow-hidden rounded-full bg-haiti-gold px-6 py-4 font-medium text-[#0a0e27] transition-all hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(233,196,106,0.45)]"
-            >
-              <Plane className="h-4 w-4" />
-              <span>{t.hero.ctaPrimary}</span>
-              <span className="opacity-50">·</span>
-              <span className="text-sm opacity-80">{t.hero.ctaPrimarySub}</span>
-              <span
-                aria-hidden
-                className="absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-white/30 transition-transform duration-700 group-hover:translate-x-[300%]"
-              />
-            </a>
-            <a
-              href="#how"
-              className="inline-flex items-center justify-center gap-1.5 text-sm text-foreground-muted transition-colors hover:text-foreground"
-            >
-              {t.hero.ctaSecondary}
-              <ArrowDown className="h-3.5 w-3.5" />
-            </a>
-            <p className="text-center text-[11px] uppercase tracking-[0.18em] text-foreground-dim">
-              {t.hero.footnote}
-            </p>
-          </div>
         </div>
-
-        <StatStrip stats={t.hero.stats} />
       </div>
     </section>
   );
 }
 
-function CounterCard({
+function CounterBand({
   total,
   pledgers,
   goal,
@@ -104,6 +121,7 @@ function CounterCard({
   totalLabel,
   pledgersLabel,
   goalLabel,
+  stats,
 }: {
   total: number;
   pledgers: number;
@@ -113,73 +131,6 @@ function CounterCard({
   totalLabel: string;
   pledgersLabel: string;
   goalLabel: string;
-}) {
-  return (
-    <div className="glass relative overflow-hidden rounded-3xl p-6 sm:p-8">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-20 -right-20 h-60 w-60 rounded-full bg-haiti-gold/10 blur-3xl"
-      />
-      <div className="flex items-baseline justify-between gap-3">
-        <div className="text-[11px] uppercase tracking-[0.28em] text-foreground-muted">
-          {totalLabel}
-        </div>
-        <div className="flex items-center gap-1.5 text-[11px] uppercase tracking-[0.18em] text-foreground-muted">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-          </span>
-          {liveLabel}
-        </div>
-      </div>
-
-      <div className="mt-3 flex items-baseline gap-3">
-        <div className="font-display text-[56px] font-semibold tracking-tight leading-[1] sm:text-[72px] md:text-[88px]">
-          <AnimatedCounter
-            value={total}
-            formatter={(n) => formatMoney(n)}
-            className="gold-text"
-          />
-        </div>
-        <div className="text-sm text-foreground-muted tabular-nums">
-          / {formatMoney(goal, { compact: true })}
-        </div>
-      </div>
-
-      <div className="mt-5">
-        <div className="relative h-2.5 overflow-hidden rounded-full bg-white/5">
-          <div
-            className="h-full rounded-full bg-gradient-to-r from-haiti-blue via-haiti-gold to-haiti-red transition-all duration-700"
-            style={{ width: `${Math.max(2, percent)}%` }}
-          />
-          <div
-            className="absolute inset-y-0 left-0 rounded-full shimmer"
-            style={{ width: `${Math.max(2, percent)}%` }}
-          />
-        </div>
-        <div className="mt-3 flex items-center justify-between text-xs text-foreground-muted">
-          <span>
-            <AnimatedCounter
-              value={pledgers}
-              className="text-foreground font-medium"
-            />{" "}
-            {pledgersLabel}
-          </span>
-          <span>
-            {goalLabel}{" "}
-            <span className="text-foreground font-medium">
-              {formatMoney(goal, { compact: true })}
-            </span>
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function StatStrip({
-  stats,
-}: {
   stats: {
     minimum: string;
     goal: string;
@@ -188,24 +139,139 @@ function StatStrip({
     worldwide: string;
   };
 }) {
-  const items = [
-    { label: stats.minimum, value: "$50" },
-    { label: stats.goal, value: "$25M" },
-    { label: stats.tiers, value: "5" },
-    { label: stats.region, value: stats.worldwide },
-  ];
   return (
-    <div className="mt-12 grid grid-cols-2 divide-y divide-x divide-border border border-border rounded-2xl bg-background-elev/30 backdrop-blur-sm sm:grid-cols-4 sm:divide-y-0">
-      {items.map((it) => (
-        <div key={it.label} className="px-5 py-4">
-          <div className="text-[10px] uppercase tracking-[0.22em] text-foreground-dim">
-            {it.label}
+    <div className="surface-elev relative overflow-hidden rounded-3xl">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-32 -right-24 h-72 w-72 rounded-full bg-haiti-gold/10 blur-[80px]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -bottom-24 -left-16 h-60 w-60 rounded-full bg-haiti-blue/15 blur-[80px]"
+      />
+
+      <div className="grid items-stretch lg:grid-cols-[1.6fr_1fr]">
+        <div className="px-7 py-7 sm:px-10 sm:py-9">
+          <div className="flex items-center justify-between gap-3">
+            <div className="text-[11px] uppercase tracking-[0.28em] text-foreground-muted">
+              {totalLabel}
+            </div>
+            <div className="flex items-center gap-1.5 rounded-full border border-border-strong bg-background-elev/60 px-2.5 py-1 text-[10px] uppercase tracking-[0.2em] text-foreground-muted">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              </span>
+              {liveLabel}
+            </div>
           </div>
-          <div className="mt-1 font-display text-2xl font-semibold tracking-tight">
-            {it.value}
+
+          <div className="mt-4 flex flex-wrap items-baseline gap-x-4 gap-y-1">
+            <div className="font-display text-[64px] font-semibold leading-[0.95] tracking-[-0.03em] sm:text-[88px] md:text-[112px]">
+              <AnimatedCounter
+                value={total}
+                formatter={(n) => formatMoney(n)}
+                className="gold-text"
+              />
+            </div>
+            <div className="text-sm text-foreground-muted tabular-nums sm:text-base">
+              <span className="font-display text-foreground-dim italic">of</span>{" "}
+              <span className="text-foreground-soft">
+                {formatMoney(goal, { compact: true })}
+              </span>
+            </div>
+          </div>
+
+          <div className="mt-7">
+            <div className="relative h-[6px] overflow-hidden rounded-full bg-white/[0.05]">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-haiti-blue via-haiti-gold to-haiti-red transition-all duration-700"
+                style={{ width: `${Math.max(2, percent)}%` }}
+              />
+              <div
+                className="absolute inset-y-0 left-0 rounded-full shimmer"
+                style={{ width: `${Math.max(2, percent)}%` }}
+              />
+            </div>
+            <div className="mt-3 flex items-center justify-between text-xs text-foreground-muted">
+              <span>
+                <AnimatedCounter
+                  value={pledgers}
+                  className="font-medium text-foreground-soft"
+                />{" "}
+                {pledgersLabel}
+              </span>
+              <span>
+                {goalLabel}{" "}
+                <span className="font-medium text-foreground-soft">
+                  {formatMoney(goal, { compact: true })}
+                </span>
+              </span>
+            </div>
           </div>
         </div>
-      ))}
+
+        <div className="grid grid-cols-2 border-t border-border-strong lg:grid-cols-2 lg:border-t-0 lg:border-l">
+          <StatCell label={stats.minimum} value="$50" sub="USD" />
+          <StatCell label={stats.tiers} value="5" sub="ranks" border="left" />
+          <StatCell
+            label={stats.goal}
+            value="$25M"
+            sub="raise"
+            border="top"
+          />
+          <StatCell
+            label={stats.region}
+            value={stats.worldwide}
+            border="top-left"
+            small
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StatCell({
+  label,
+  value,
+  sub,
+  border,
+  small,
+}: {
+  label: string;
+  value: string;
+  sub?: string;
+  border?: "left" | "top" | "top-left";
+  small?: boolean;
+}) {
+  const borderCls =
+    border === "left"
+      ? "border-l border-border-strong"
+      : border === "top"
+        ? "border-t border-border-strong"
+        : border === "top-left"
+          ? "border-t border-l border-border-strong"
+          : "";
+  return (
+    <div className={`px-5 py-5 sm:px-6 sm:py-6 ${borderCls}`}>
+      <div className="text-[10px] uppercase tracking-[0.24em] text-foreground-dim">
+        {label}
+      </div>
+      <div className="mt-1.5 flex items-baseline gap-1.5">
+        <span
+          className={
+            "font-display font-semibold tracking-[-0.02em] " +
+            (small ? "text-xl" : "text-3xl sm:text-[34px]")
+          }
+        >
+          {value}
+        </span>
+        {sub && (
+          <span className="text-[10px] uppercase tracking-[0.18em] text-foreground-dim">
+            {sub}
+          </span>
+        )}
+      </div>
     </div>
   );
 }
@@ -226,58 +292,15 @@ function UnderlineSwoop() {
       aria-hidden
       viewBox="0 0 600 24"
       preserveAspectRatio="none"
-      className="pointer-events-none absolute -bottom-2 left-0 h-3 w-full text-haiti-gold/70"
+      className="pointer-events-none absolute -bottom-2 left-0 h-3 w-[88%] text-haiti-gold/70"
     >
       <path
         d="M2 18 C 120 4, 280 4, 380 14 S 560 22, 598 8"
         fill="none"
         stroke="currentColor"
-        strokeWidth="2.5"
+        strokeWidth="2"
         strokeLinecap="round"
       />
     </svg>
-  );
-}
-
-function BackdropArt() {
-  return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-      <div className="absolute -top-32 -left-20 h-[420px] w-[420px] rounded-full bg-haiti-blue/30 blur-[120px]" />
-      <div className="absolute -top-10 right-[-10%] h-[360px] w-[360px] rounded-full bg-haiti-red/20 blur-[110px]" />
-      <div className="absolute bottom-[-20%] left-[30%] h-[300px] w-[300px] rounded-full bg-haiti-gold/15 blur-[110px]" />
-      <svg
-        viewBox="0 0 1200 600"
-        preserveAspectRatio="none"
-        className="absolute inset-0 h-full w-full opacity-[0.18]"
-      >
-        <defs>
-          <linearGradient id="arc" x1="0" x2="1" y1="0" y2="0">
-            <stop offset="0%" stopColor="rgba(233,196,106,0)" />
-            <stop offset="50%" stopColor="rgba(233,196,106,0.9)" />
-            <stop offset="100%" stopColor="rgba(220,38,38,0)" />
-          </linearGradient>
-          <linearGradient id="arc2" x1="0" x2="1" y1="0" y2="0">
-            <stop offset="0%" stopColor="rgba(29,78,216,0)" />
-            <stop offset="50%" stopColor="rgba(29,78,216,0.85)" />
-            <stop offset="100%" stopColor="rgba(233,196,106,0)" />
-          </linearGradient>
-        </defs>
-        <path
-          d="M -50 520 C 200 280, 700 220, 1250 80"
-          fill="none"
-          stroke="url(#arc)"
-          strokeWidth="1.4"
-          strokeDasharray="2 6"
-        />
-        <path
-          d="M -50 580 C 300 380, 800 320, 1250 180"
-          fill="none"
-          stroke="url(#arc2)"
-          strokeWidth="1"
-          strokeDasharray="1 8"
-        />
-      </svg>
-      <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-haiti-gold/30 to-transparent" />
-    </div>
   );
 }
