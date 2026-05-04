@@ -93,7 +93,14 @@ export function AirplaneArt() {
         />
         <circle cx="300" cy="500" r="58" fill="rgba(247, 220, 160, 0.25)" />
 
-        <g className="drift-x">
+        <g>
+          <animateTransform
+            attributeName="transform"
+            type="translate"
+            values="-6 0; 6 0; -6 0"
+            dur="14s"
+            repeatCount="indefinite"
+          />
           <path
             d="M 40 600 C 180 460, 360 360, 560 200"
             fill="none"
@@ -117,11 +124,26 @@ export function AirplaneArt() {
           y2="220"
           stroke="url(#contrail)"
           strokeWidth="1.6"
-          className="contrail-dash"
-        />
+          strokeDasharray="4 10"
+        >
+          <animate
+            attributeName="stroke-dashoffset"
+            values="0;-120"
+            dur="6s"
+            repeatCount="indefinite"
+          />
+        </line>
 
-        <g transform="translate(380 220) rotate(-18)" className="float-y">
-          <ellipse cx="0" cy="0" rx="92" ry="10" fill="url(#planeBody)" />
+        <g>
+          <animateTransform
+            attributeName="transform"
+            type="translate"
+            values="0 0; 0 -8; 0 0"
+            dur="6.5s"
+            repeatCount="indefinite"
+          />
+          <g transform="translate(380 220) rotate(-18)">
+            <ellipse cx="0" cy="0" rx="92" ry="10" fill="url(#planeBody)" />
           <path
             d="M 92 0 Q 110 -2, 120 0 Q 110 2, 92 0 Z"
             fill="#f7dca0"
@@ -155,6 +177,7 @@ export function AirplaneArt() {
             fill="rgba(13, 18, 50, 0.85)"
           />
           <ellipse cx="-10" cy="-4" rx="60" ry="2" fill="rgba(255,255,255,0.18)" />
+          </g>
         </g>
 
         <g fill="rgba(244, 236, 216, 0.7)">
