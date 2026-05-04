@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+:root {
+  --background: #07091c;
+  --background-elev: #0d1130;
+  --background-glass: rgba(15, 19, 50, 0.65);
+  --foreground: #f6f1e1;
+  --foreground-muted: #b8b3a5;
+  --foreground-dim: #7c7766;
+  --border: rgba(245, 240, 225, 0.08);
+  --border-strong: rgba(245, 240, 225, 0.18);
+  --haiti-blue: #1d4ed8;
+  --haiti-red: #dc2626;
+  --haiti-gold: #e9c46a;
+  --haiti-cream: #f6f1e1;
+  --accent: #e9c46a;
+  --danger: #f87171;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-background-elev: var(--background-elev);
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-foreground-dim: var(--foreground-dim);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-haiti-blue: var(--haiti-blue);
+  --color-haiti-red: var(--haiti-red);
+  --color-haiti-gold: var(--haiti-gold);
+  --color-haiti-cream: var(--haiti-cream);
+  --color-accent: var(--accent);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-fraunces);
+}
+
+* {
+  border-color: var(--border);
+}
+
+html,
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(29, 78, 216, 0.18), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 100% 30%, rgba(220, 38, 38, 0.1), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 0% 70%, rgba(233, 196, 106, 0.08), transparent 60%),
+    var(--background);
+  background-attachment: fixed;
+}
+
+.font-display {
+  font-family: var(--font-fraunces), ui-serif, Georgia, serif;
+  font-feature-settings: "ss01", "liga";
+}
+
+.glass {
+  background: var(--background-glass);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid var(--border-strong);
+}
+
+.gold-text {
+  background: linear-gradient(135deg, #f8d77a 0%, #e9c46a 50%, #c9a23d 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.flag-stripe {
+  background: linear-gradient(180deg, var(--haiti-blue) 0%, var(--haiti-blue) 50%, var(--haiti-red) 50%, var(--haiti-red) 100%);
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(233, 196, 106, 0.45); }
+  50% { box-shadow: 0 0 0 12px rgba(233, 196, 106, 0); }
+}
+
+.pulse-glow { animation: pulse-glow 2.4s ease-in-out infinite; }
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2.5s linear infinite;
+}
+
+@keyframes float-up {
+  0% { transform: translateY(8px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+::selection {
+  background: rgba(233, 196, 106, 0.35);
+  color: var(--foreground);
+}
