@@ -43,3 +43,4 @@ next-env.d.ts
 # Convex generated types are committed so Vercel builds work without
 # re-running codegen on the build host. They're regenerated locally by
 # `npx convex dev` when the schema changes — commit those updates.
+.env*.local
