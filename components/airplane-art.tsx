@@ -1,6 +1,20 @@
 "use client";
 
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+
 export function AirplaneArt() {
+  const totals = useQuery(api.pledges.totals);
+  const recent = useQuery(api.pledges.recent, { limit: 1 });
+
+  const passengers = totals?.totalPledgers ?? 0;
+  const passengersDisplay =
+    passengers > 0 ? passengers.toLocaleString("en-US") : "—";
+  const flightNumber =
+    passengers > 0 ? String(passengers).padStart(4, "0") : "0000";
+  const latest = recent?.[0];
+  const lastJoinedCity = latest?.city ?? null;
+
   return (
     <div
       aria-hidden
@@ -50,13 +64,9 @@ export function AirplaneArt() {
           </pattern>
         </defs>
 
-        {/* sky/sunset glow */}
         <rect width="600" height="720" fill="url(#sky)" />
-
-        {/* dot grid */}
         <rect width="600" height="720" fill="url(#dots)" opacity="0.55" />
 
-        {/* horizon line */}
         <line
           x1="0"
           y1="500"
@@ -74,7 +84,6 @@ export function AirplaneArt() {
           strokeWidth="0.5"
         />
 
-        {/* sun glow */}
         <circle
           cx="300"
           cy="500"
@@ -82,14 +91,8 @@ export function AirplaneArt() {
           fill="rgba(217, 179, 103, 0.18)"
           filter="blur(2px)"
         />
-        <circle
-          cx="300"
-          cy="500"
-          r="58"
-          fill="rgba(247, 220, 160, 0.25)"
-        />
+        <circle cx="300" cy="500" r="58" fill="rgba(247, 220, 160, 0.25)" />
 
-        {/* flight arc */}
         <g className="drift-x">
           <path
             d="M 40 600 C 180 460, 360 360, 560 200"
@@ -107,7 +110,6 @@ export function AirplaneArt() {
           />
         </g>
 
-        {/* contrail under plane */}
         <line
           x1="60"
           y1="320"
@@ -118,24 +120,18 @@ export function AirplaneArt() {
           className="contrail-dash"
         />
 
-        {/* airplane silhouette (3/4 view, stylized) */}
         <g transform="translate(380 220) rotate(-18)" className="float-y">
-          {/* fuselage */}
           <ellipse cx="0" cy="0" rx="92" ry="10" fill="url(#planeBody)" />
-          {/* nose cone */}
           <path
             d="M 92 0 Q 110 -2, 120 0 Q 110 2, 92 0 Z"
             fill="#f7dca0"
           />
-          {/* tail vertical fin */}
           <path
             d="M -82 0 L -100 -22 L -88 -22 L -76 -2 Z"
             fill="url(#wing)"
           />
-          {/* tail flag stripe */}
           <rect x="-94" y="-22" width="3" height="22" fill="#1e3a8a" />
           <rect x="-91" y="-22" width="3" height="22" fill="#c81d3a" />
-          {/* main wings */}
           <path
             d="M -10 4 L -60 38 L -28 38 L 22 6 Z"
             fill="url(#wing)"
@@ -145,10 +141,8 @@ export function AirplaneArt() {
             fill="url(#wing)"
             opacity="0.85"
           />
-          {/* engines */}
           <ellipse cx="-32" cy="22" rx="9" ry="4" fill="#8c6d2e" />
           <ellipse cx="-32" cy="-22" rx="9" ry="4" fill="#8c6d2e" opacity="0.85" />
-          {/* windows */}
           <g fill="rgba(13, 18, 50, 0.75)">
             <rect x="20" y="-2" width="6" height="2.5" rx="1" />
             <rect x="32" y="-2" width="6" height="2.5" rx="1" />
@@ -156,16 +150,13 @@ export function AirplaneArt() {
             <rect x="56" y="-2" width="6" height="2.5" rx="1" />
             <rect x="68" y="-2" width="6" height="2.5" rx="1" />
           </g>
-          {/* cockpit window */}
           <path
             d="M 76 -1 Q 88 -3, 95 -0.5 L 95 1 Q 88 2.5, 76 1 Z"
             fill="rgba(13, 18, 50, 0.85)"
           />
-          {/* highlight on top */}
           <ellipse cx="-10" cy="-4" rx="60" ry="2" fill="rgba(255,255,255,0.18)" />
         </g>
 
-        {/* tiny stars / sparkle */}
         <g fill="rgba(244, 236, 216, 0.7)">
           <circle cx="120" cy="80" r="1" />
           <circle cx="510" cy="120" r="1.2" />
@@ -174,7 +165,6 @@ export function AirplaneArt() {
           <circle cx="220" cy="50" r="0.6" />
         </g>
 
-        {/* bottom fade */}
         <rect
           x="0"
           y="560"
@@ -185,17 +175,22 @@ export function AirplaneArt() {
         />
       </svg>
 
-      {/* boarding-pass float card */}
       <div className="pointer-events-none absolute bottom-5 left-5 right-5 sm:left-6 sm:right-6">
         <div className="surface rounded-2xl p-4 text-[11px] uppercase tracking-[0.18em]">
           <div className="flex items-center justify-between text-foreground-dim">
-            <span>Napo Air · Boarding Pass</span>
-            <span className="text-haiti-gold">NA · 0001</span>
+            <span>Diaspora · Boarding pass</span>
+            <span className="flex items-center gap-1.5 text-haiti-gold">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              </span>
+              NA · {flightNumber}
+            </span>
           </div>
           <div className="mt-2 flex items-baseline gap-3 font-display tracking-tight">
             <div>
-              <div className="text-[9px] text-foreground-dim">From</div>
-              <div className="text-2xl text-foreground-soft">JFK</div>
+              <div className="text-[9px] text-foreground-dim">Origin</div>
+              <div className="text-2xl text-foreground-soft">Diaspora</div>
             </div>
             <svg
               viewBox="0 0 80 12"
@@ -206,13 +201,25 @@ export function AirplaneArt() {
               <circle cx="2" cy="6" r="1.2" />
             </svg>
             <div className="text-right">
-              <div className="text-[9px] text-foreground-dim">To</div>
-              <div className="text-2xl text-foreground-soft">PAP</div>
+              <div className="text-[9px] text-foreground-dim">Destination</div>
+              <div className="text-2xl text-foreground-soft">Ayiti</div>
             </div>
           </div>
           <div className="mt-2 flex items-center justify-between text-foreground-dim">
-            <span>Flight by the diaspora</span>
-            <span className="font-mono normal-case">ETD: SOON</span>
+            <span className="normal-case tracking-normal text-foreground-muted">
+              <span className="font-medium tabular-nums text-foreground-soft">
+                {passengersDisplay}
+              </span>{" "}
+              passengers boarded
+              {lastJoinedCity && (
+                <span className="hidden sm:inline">
+                  {" "}
+                  · last from{" "}
+                  <span className="text-foreground-soft">{lastJoinedCity}</span>
+                </span>
+              )}
+            </span>
+            <span className="font-mono">ETD: SOON</span>
           </div>
         </div>
       </div>

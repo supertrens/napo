@@ -101,20 +101,41 @@ The mutation maintains a singleton `stats` row (`totalAmount`, `totalPledgers`) 
 
 ## Deploy to Vercel
 
-The build command must run `convex deploy` so the production schema/functions are pushed before Next.js builds.
+This repo includes `vercel.json` that overrides the build command to:
 
-1. Push this directory to a GitHub repo.
-2. Vercel dashboard → **New Project** → import repo.
-3. **Build Command** override:
-   ```
-   npx convex deploy --cmd "next build"
-   ```
-4. **Environment Variables**:
-   - `CONVEX_DEPLOY_KEY` — Convex dashboard → your project → Settings → URL & Deploy Key → Production deploy key.
-   - `NEXT_PUBLIC_CONVEX_URL` — production Convex URL from the same panel (also auto-set by `convex deploy` during the build).
-5. Deploy.
+```
+npx convex deploy --cmd 'next build'
+```
 
-Subsequent `git push` to `main` triggers automatic deploys. If Convex schema deploy fails, the Next.js build aborts — you won't ship a broken app pointing at an outdated backend.
+That deploys Convex schema + functions to production, then builds Next.js. **One env var is required for this to work.**
+
+### Required: `CONVEX_DEPLOY_KEY`
+
+Without this Vercel env var the build fails with:
+
+```
+✖ Error fetching GET https://api.convex.dev/.../team_and_project 401 Unauthorized:
+  MissingAccessToken: An access token is required for this command.
+  Authenticate with `npx convex dev`
+```
+
+**Steps:**
+
+1. Open the [Convex dashboard](https://dashboard.convex.dev/).
+2. Pick (or create) a **production** deployment for this project.
+3. **Settings → URL & Deploy Key → Generate Production Deploy Key**. Copy it (starts with `prod:`).
+4. Vercel project → **Settings → Environment Variables** → add:
+   - Name: `CONVEX_DEPLOY_KEY`
+   - Value: the key you copied
+   - Environments: **Production** (and Preview if you want preview deploys)
+5. Redeploy. `NEXT_PUBLIC_CONVEX_URL` is auto-injected by `convex deploy` during the build — no need to set it manually.
+
+### One-time first deploy
+
+1. Push this repo to GitHub.
+2. Vercel dashboard → **Add New… → Project** → import the repo.
+3. Add `CONVEX_DEPLOY_KEY` (above) before the first build.
+4. Deploy. Subsequent `git push` to `main` triggers automatic deploys. If the Convex schema deploy fails, the Next.js build aborts — you won't ship a frontend pointing at an outdated backend.
 
 ---
 
