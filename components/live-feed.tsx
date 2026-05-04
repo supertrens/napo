@@ -7,8 +7,10 @@ import { getTier } from "@/lib/tiers";
 import { TierBadge } from "./tier-badge";
 import { formatMoney, initials, timeAgo } from "@/lib/utils";
 import { useEffect, useState } from "react";
+import { useT } from "./language-provider";
 
 export function LiveFeed() {
+  const t = useT();
   const recent = useQuery(api.pledges.recent, { limit: 12 });
   const [now, setNow] = useState(Date.now());
 
@@ -26,10 +28,12 @@ export function LiveFeed() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
             </span>
-            Live commitments
+            {t.feed.eyebrow}
           </div>
           <h3 className="mt-2 font-display text-3xl tracking-tight sm:text-4xl">
-            The diaspora, <span className="gold-text">in real time</span>.
+            {t.feed.headline1}{" "}
+            <span className="gold-text">{t.feed.headline2}</span>
+            {t.feed.headlineEnd}
           </h3>
         </div>
       </div>
@@ -38,7 +42,10 @@ export function LiveFeed() {
         {recent === undefined ? (
           <SkeletonList />
         ) : recent.length === 0 ? (
-          <EmptyState />
+          <EmptyState
+            title={t.feed.emptyTitle}
+            body={t.feed.emptyBody}
+          />
         ) : (
           <ul className="grid gap-2.5 sm:grid-cols-2">
             <AnimatePresence initial={false}>
@@ -82,7 +89,7 @@ export function LiveFeed() {
                         </div>
                         <div className="truncate text-xs text-foreground-muted">
                           {p.city}, {p.country} ·{" "}
-                          {timeAgo(p.lastPledgeAt, now)} ago
+                          {timeAgo(p.lastPledgeAt, now)} {t.feed.ago}
                         </div>
                       </div>
                       <div className="text-right">
@@ -121,15 +128,11 @@ function SkeletonList() {
   );
 }
 
-function EmptyState() {
+function EmptyState({ title, body }: { title: string; body: string }) {
   return (
     <div className="glass rounded-2xl px-6 py-12 text-center">
-      <div className="font-display text-2xl tracking-tight">
-        Be the first.
-      </div>
-      <p className="mt-2 text-sm text-foreground-muted">
-        Your name lights up the feed when you pledge.
-      </p>
+      <div className="font-display text-2xl tracking-tight">{title}</div>
+      <p className="mt-2 text-sm text-foreground-muted">{body}</p>
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { getTier } from "@/lib/tiers";
 import { formatMoney } from "@/lib/utils";
+import { useT } from "./language-provider";
 
 type Notice = {
   key: string;
@@ -16,6 +17,7 @@ type Notice = {
 };
 
 export function PledgeTicker() {
+  const t = useT();
   const recent = useQuery(api.pledges.recent, { limit: 1 });
   const [notice, setNotice] = useState<Notice | null>(null);
   const lastSeenRef = useRef<string | null>(null);
@@ -72,11 +74,13 @@ export function PledgeTicker() {
             </span>
             <div className="text-sm">
               <span className="font-medium">{notice.name}</span>{" "}
-              <span className="text-foreground-muted">from</span>{" "}
+              <span className="text-foreground-muted">{t.ticker.from}</span>{" "}
               <span className="font-medium">
                 {notice.city}, {notice.country}
               </span>{" "}
-              <span className="text-foreground-muted">just committed</span>{" "}
+              <span className="text-foreground-muted">
+                {t.ticker.committed}
+              </span>{" "}
               <span
                 className="font-semibold tabular-nums"
                 style={{ color: getTier(notice.amount).accent }}

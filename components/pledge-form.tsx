@@ -1,14 +1,15 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { TIERS, getTier, nextTier, progressToNext } from "@/lib/tiers";
+import { getTier, nextTier, progressToNext } from "@/lib/tiers";
 import { TierBadge } from "./tier-badge";
 import { TierLadder } from "./tier-ladder";
 import { cn, formatMoney } from "@/lib/utils";
 import { Loader2, ShieldCheck, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useT } from "./language-provider";
 
 const PRESETS = [50, 100, 250, 500, 1000, 5000, 10000, 25000];
 
@@ -25,6 +26,7 @@ type Status =
   | { kind: "error"; message: string };
 
 export function PledgeForm() {
+  const t = useT();
   const submit = useMutation(api.pledges.submit);
 
   const [name, setName] = useState("");
@@ -50,7 +52,8 @@ export function PledgeForm() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [existing?.name]);
 
-  const projected = (existing?.amount ?? 0) + (Number.isFinite(amount) ? amount : 0);
+  const projected =
+    (existing?.amount ?? 0) + (Number.isFinite(amount) ? amount : 0);
   const projectedTier = getTier(projected);
   const ladderProgress = progressToNext(projected);
 
@@ -82,7 +85,7 @@ export function PledgeForm() {
         pledgeCount: result.pledgeCount,
       });
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Yon erè rive";
+      const message = err instanceof Error ? err.message : "Error";
       setStatus({ kind: "error", message });
     }
   }
@@ -106,14 +109,15 @@ export function PledgeForm() {
         <div>
           <div className="flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-foreground-muted">
             <Sparkles className="h-3.5 w-3.5 text-haiti-gold" />
-            Pledge — no payment yet
+            {t.form.eyebrow}
           </div>
           <h2 className="mt-3 font-display text-4xl tracking-tight sm:text-5xl">
-            Make your <span className="gold-text">commitment</span>.
+            {t.form.title1}{" "}
+            <span className="gold-text">{t.form.title2}</span>
+            {t.form.titleEnd}
           </h2>
           <p className="mt-3 max-w-xl text-foreground-muted">
-            $50 minimum. We hold your word, not your money. When the raise
-            opens, we'll reach out with secure payment instructions.
+            {t.form.subtitle}
           </p>
 
           <AnimatePresence mode="wait">
@@ -151,16 +155,13 @@ export function PledgeForm() {
                     />
                     <div>
                       <div className="font-medium">
-                        Welcome back, {existing.name.split(" ")[0]}.
+                        {t.form.welcomeBack(existing.name.split(" ")[0])}
                       </div>
                       <div className="text-foreground-muted">
-                        You've already pledged{" "}
-                        <span className="text-foreground">
-                          {formatMoney(existing.amount)}
-                        </span>{" "}
-                        across {existing.pledgeCount} commitment
-                        {existing.pledgeCount === 1 ? "" : "s"}. New amount adds
-                        to your total.
+                        {t.form.alreadyPledged(
+                          formatMoney(existing.amount),
+                          existing.pledgeCount,
+                        )}
                       </div>
                     </div>
                   </div>
@@ -168,39 +169,39 @@ export function PledgeForm() {
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Field
-                    label="Full name"
+                    label={t.form.labels.name}
                     value={name}
                     onChange={setName}
-                    placeholder="Marie Joseph"
+                    placeholder={t.form.placeholders.name}
                     autoComplete="name"
                   />
                   <Field
-                    label="Email"
+                    label={t.form.labels.email}
                     type="email"
                     value={email}
                     onChange={setEmail}
-                    placeholder="you@example.com"
+                    placeholder={t.form.placeholders.email}
                     autoComplete="email"
                   />
                   <Field
-                    label="City"
+                    label={t.form.labels.city}
                     value={city}
                     onChange={setCity}
-                    placeholder="Port-au-Prince"
+                    placeholder={t.form.placeholders.city}
                     autoComplete="address-level2"
                   />
                   <Field
-                    label="Country"
+                    label={t.form.labels.country}
                     value={country}
                     onChange={setCountry}
-                    placeholder="Haiti"
+                    placeholder={t.form.placeholders.country}
                     autoComplete="country-name"
                   />
                 </div>
 
                 <div className="mt-5">
                   <div className="text-xs uppercase tracking-[0.22em] text-foreground-muted">
-                    Pledge amount (USD)
+                    {t.form.labels.amount}
                   </div>
                   <div className="mt-2 flex flex-wrap gap-2">
                     {PRESETS.map((p) => (
@@ -239,7 +240,7 @@ export function PledgeForm() {
                       }}
                       className="w-full bg-transparent py-3 pr-4 text-2xl font-display tracking-tight outline-none tabular-nums"
                       placeholder="100"
-                      aria-label="Pledge amount"
+                      aria-label={t.form.labels.amount}
                     />
                     <div className="flex items-center pr-4">
                       <TierBadge tier={projectedTier} size="sm" showSub />
@@ -247,20 +248,16 @@ export function PledgeForm() {
                   </div>
                   {amount > 0 && amount < 50 && (
                     <div className="mt-2 text-xs text-haiti-red">
-                      Minimum pledge is $50.
+                      {t.form.minError}
                     </div>
                   )}
 
                   {ladderProgress.next && projected >= 50 && (
                     <div className="mt-3 text-xs text-foreground-muted">
-                      <span className="text-foreground">
-                        {formatMoney(ladderProgress.remaining)}
-                      </span>{" "}
-                      more to reach{" "}
-                      <span style={{ color: ladderProgress.next.accent }}>
-                        {ladderProgress.next.label}
-                      </span>
-                      .
+                      {t.form.moreToReach(
+                        formatMoney(ladderProgress.remaining),
+                        ladderProgress.next.label,
+                      )}
                     </div>
                   )}
                 </div>
@@ -284,19 +281,21 @@ export function PledgeForm() {
                   {status.kind === "submitting" ? (
                     <>
                       <Loader2 className="h-4 w-4 animate-spin" />
-                      Sending pledge…
+                      {t.form.submitting}
                     </>
                   ) : (
                     <>
-                      Pledge {amount >= 50 ? formatMoney(amount) : "$50+"}
-                      <span className="opacity-70">— Mwen ladan l</span>
+                      {t.form.submit(
+                        amount >= 50 ? formatMoney(amount) : "$50+",
+                      )}
+                      <span className="opacity-70">— {t.form.submitSub}</span>
                     </>
                   )}
                 </button>
 
                 <div className="mt-3 flex items-center justify-center gap-1.5 text-[11px] text-foreground-dim">
                   <ShieldCheck className="h-3 w-3" />
-                  No payment now. Your data is held securely; never sold.
+                  {t.form.disclaimer}
                 </div>
               </motion.form>
             )}
@@ -305,14 +304,13 @@ export function PledgeForm() {
 
         <aside id="how" className="lg:pt-2">
           <div className="text-xs uppercase tracking-[0.22em] text-foreground-muted">
-            Tiers
+            {t.form.tiersTitle}
           </div>
           <h3 className="mt-2 font-display text-2xl tracking-tight">
-            Where will your pledge land?
+            {t.form.tiersHead}
           </h3>
           <p className="mt-2 text-sm text-foreground-muted">
-            Tiers are cumulative. Every additional pledge stacks toward a
-            higher rank.
+            {t.form.tiersSub}
           </p>
           <div className="mt-5">
             <TierLadder amount={projected} />
@@ -370,6 +368,7 @@ function SuccessCard({
   onAddMore: () => void;
   onClose: () => void;
 }) {
+  const t = useT();
   const next = nextTier(total);
   return (
     <motion.div
@@ -390,27 +389,19 @@ function SuccessCard({
         <Sparkles className="h-7 w-7" style={{ color: tier.accent }} />
       </div>
       <div className="mt-5 font-display text-3xl tracking-tight sm:text-4xl">
-        {isReturning ? "Komitman ogmante." : "Mèsi anpil."}
+        {isReturning ? t.form.successReturning : t.form.successNew}
       </div>
       <p className="mt-2 text-foreground-muted">
-        You {isReturning ? "added" : "pledged"}{" "}
-        <span className="text-foreground">{formatMoney(delta)}</span>.{" "}
-        {isReturning ? (
-          <>
-            Total commitment now{" "}
-            <span className="text-foreground">{formatMoney(total)}</span>.
-          </>
-        ) : (
-          <>You're a <span style={{ color: tier.accent }}>{tier.label}</span>.</>
-        )}
+        {isReturning
+          ? t.form.successDescReturning(formatMoney(delta), formatMoney(total))
+          : t.form.successDescNew(formatMoney(delta), tier.label)}
       </p>
       <div className="mt-5 flex justify-center">
         <TierBadge tier={tier} size="md" showSub />
       </div>
       {next && (
         <p className="mt-4 text-xs text-foreground-muted">
-          {formatMoney(next.min - total)} more to{" "}
-          <span style={{ color: next.accent }}>{next.label}</span>.
+          {t.form.successNext(formatMoney(next.min - total), next.label)}
         </p>
       )}
       <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -418,13 +409,13 @@ function SuccessCard({
           onClick={onAddMore}
           className="rounded-full bg-haiti-gold px-5 py-2.5 text-sm font-medium text-[#0a0e27] transition-all hover:scale-[1.02]"
         >
-          Add more
+          {t.form.addMore}
         </button>
         <button
           onClick={onClose}
           className="text-sm text-foreground-muted transition-colors hover:text-foreground"
         >
-          Done
+          {t.form.done}
         </button>
       </div>
     </motion.div>
