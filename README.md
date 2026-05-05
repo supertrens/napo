@@ -1,4 +1,4 @@
-# Napo Air
+# Spirit of Haiti Air
 
 > An airline for the diaspora, by the diaspora.
 

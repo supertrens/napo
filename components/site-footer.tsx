@@ -11,7 +11,7 @@ export function SiteFooter() {
           <span className="flag-stripe inline-block h-10 w-1 rounded-sm" />
           <div>
             <div className="font-display text-base">
-              <span className="font-semibold">Napo</span>{" "}
+              <span className="font-semibold">Spirit of Haiti</span>{" "}
               <span className="display-italic text-haiti-gold">Air</span>
             </div>
             <p className="mt-1 max-w-md text-xs leading-relaxed text-foreground-muted">
@@ -21,7 +21,7 @@ export function SiteFooter() {
         </div>
         <div className="text-xs text-foreground-dim sm:text-right">
           <div>{t.footer.note}</div>
-          <div className="mt-0.5">© {new Date().getFullYear()} Napo Air</div>
+          <div className="mt-0.5">© {new Date().getFullYear()} Spirit of Haiti Air</div>
         </div>
       </div>
     </footer>

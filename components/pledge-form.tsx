@@ -463,12 +463,12 @@ function SuccessCard({
           <div className="flex items-center justify-between gap-4 text-[10px] uppercase tracking-[0.32em] text-foreground-dim">
             <span className="flex items-center gap-2">
               <Plane className="h-3 w-3 text-haiti-gold" />
-              <span className="text-haiti-gold font-medium">Napo Air</span>
+              <span className="text-haiti-gold font-medium">Spirit of Haiti Air</span>
               <span className="opacity-50">·</span>
               <span>Boarding Pass</span>
             </span>
             <span className="font-mono text-foreground-muted">
-              NA-{codes.flightNum}
+              SH-{codes.flightNum}
             </span>
           </div>
 

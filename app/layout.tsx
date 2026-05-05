@@ -25,11 +25,11 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Napo Air — An Airline For The Diaspora, By The Diaspora",
+  title: "Spirit of Haiti Air — An Airline For The Diaspora, By The Diaspora",
   description:
     "Pledge to help the Haitian diaspora acquire a stake in Spirit Airlines and launch a homeland airline. $25M goal, $50 minimum.",
   openGraph: {
-    title: "Napo Air — Let's Buy Spirit Airlines",
+    title: "Spirit of Haiti Air — The Diaspora Buys Spirit",
     description:
       "An airline for the diaspora, by the diaspora. Pledge $50+ to back the $25M raise.",
     type: "website",

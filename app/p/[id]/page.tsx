@@ -43,12 +43,12 @@ export async function generateMetadata({
   const pledger = await loadPledger(id);
   if (!pledger) {
     return {
-      title: "Napo Air — An Airline For The Diaspora",
+      title: "Spirit of Haiti Air — An Airline For The Diaspora",
     };
   }
   const tier = getTier(pledger.amount);
   const firstName = pledger.name.split(" ")[0];
-  const title = `${firstName} from ${pledger.city} just boarded Napo Air`;
+  const title = `${firstName} from ${pledger.city} just boarded Spirit of Haiti Air`;
   const description = `${firstName} pledged as a ${tier.label} (${tier.sublabel}). Will you board too? $50 minimum.`;
   return {
     title,
@@ -62,7 +62,7 @@ export async function generateMetadata({
           url: `/p/${id}/opengraph-image`,
           width: 1200,
           height: 630,
-          alt: `${firstName}'s Napo Air boarding pass`,
+          alt: `${firstName}'s Spirit of Haiti Air boarding pass`,
         },
       ],
     },

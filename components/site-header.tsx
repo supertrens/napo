@@ -14,11 +14,11 @@ export function SiteHeader() {
             <span className="flag-stripe absolute left-0 top-0 h-full w-1 rounded-l-md" />
             <Plane className="h-3.5 w-3.5 text-haiti-gold" />
           </span>
-          <span className="flex items-baseline gap-1">
-            <span className="font-display text-lg font-semibold tracking-[-0.02em]">
-              Napo
+          <span className="flex items-baseline gap-1 whitespace-nowrap">
+            <span className="font-display text-sm sm:text-lg font-semibold tracking-[-0.02em]">
+              Spirit of Haiti
             </span>
-            <span className="font-display display-italic text-lg text-haiti-gold">
+            <span className="font-display display-italic text-sm sm:text-lg text-haiti-gold">
               Air
             </span>
           </span>

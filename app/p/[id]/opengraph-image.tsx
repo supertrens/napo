@@ -7,7 +7,7 @@ import { getTier } from "@/lib/tiers";
 export const runtime = "nodejs";
 export const contentType = "image/png";
 export const size = { width: 1200, height: 630 };
-export const alt = "Napo Air boarding pass";
+export const alt = "Spirit of Haiti Air boarding pass";
 
 const TIER_CLASS: Record<string, string> = {
   fondate: "FOUNDER",
@@ -182,10 +182,10 @@ export default async function Image({ params }: { params: { id: string } }) {
               style={{
                 color: "#d9b367",
                 fontWeight: 700,
-                letterSpacing: 8,
+                letterSpacing: 5,
               }}
             >
-              ✈ NAPO AIR
+              ✈ SPIRIT OF HAITI AIR
             </span>
             <span style={{ opacity: 0.5 }}>·</span>
             <span>BOARDING PASS</span>
@@ -197,7 +197,7 @@ export default async function Image({ params }: { params: { id: string } }) {
               fontWeight: 500,
             }}
           >
-            NA-{codes.flightNum}
+            SH-{codes.flightNum}
           </div>
         </div>
 

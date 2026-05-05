@@ -10,7 +10,7 @@ import { v } from "convex/values";
  *   1. Sign up at https://resend.com and get an API key.
  *   2. In Convex dashboard → Settings → Environment Variables, add:
  *        RESEND_API_KEY = re_xxxxxxxxxxxx
- *        RESEND_FROM    = "Napo Air <hello@yourdomain.com>"
+ *        RESEND_FROM    = "Spirit of Haiti Air <hello@spiritofhaitiair.com>"
  *   3. Verify the sender domain in Resend.
  *
  * If RESEND_API_KEY is unset the action no-ops silently — safe for local dev.
@@ -38,10 +38,10 @@ export const sendConfirmation = action({
       );
       return { sent: false, reason: "not-configured" };
     }
-    const subject = `Napo Air · Boarding pass confirmed (${args.name})`;
+    const subject = `Spirit of Haiti Air · Boarding pass confirmed (${args.name})`;
     const html = `
       <div style="font-family:system-ui,sans-serif;background:#05071a;color:#f4ecd8;padding:32px;border-radius:16px">
-        <div style="font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:#a39d8e">Napo Air · Boarding pass</div>
+        <div style="font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:#a39d8e">Spirit of Haiti Air · Boarding pass</div>
         <h1 style="font-family:Georgia,serif;font-size:32px;margin:8px 0 0;letter-spacing:-1px">Mèsi anpil, ${escapeHtml(args.name)}.</h1>
         <p style="color:#a39d8e;margin-top:8px">You're on the list. We'll reach out with secure payment instructions when the raise opens.</p>
         <div style="margin-top:24px;padding:16px;border:1px dashed rgba(244,236,216,.16);border-radius:12px">

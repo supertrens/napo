@@ -15,7 +15,7 @@ export const messages = {
       pledge: "Pledge",
     },
     hero: {
-      eyebrow: "Napo Air · Diaspora initiative",
+      eyebrow: "Spirit of Haiti Air · Diaspora initiative",
       line1: "An airline",
       line2: "for the diaspora",
       line3: "by the diaspora.",
@@ -117,7 +117,7 @@ export const messages = {
       ],
     },
     footer: {
-      brand: "Napo Air · An airline for the diaspora, by the diaspora.",
+      brand: "Spirit of Haiti Air · An airline for the diaspora, by the diaspora.",
       note: "A pledge is a promise — no charge today.",
     },
     toggle: {
@@ -228,7 +228,7 @@ export const messages = {
       pledge: "Pledj",
     },
     hero: {
-      eyebrow: "Napo Air · Inisyativ dyaspora a",
+      eyebrow: "Spirit of Haiti Air · Inisyativ dyaspora a",
       line1: "Yon konpayi avyon",
       line2: "pou dyaspora a",
       line3: "pa dyaspora a.",
@@ -332,7 +332,7 @@ export const messages = {
       ],
     },
     footer: {
-      brand: "Napo Air · Yon konpayi avyon pou dyaspora a, pa dyaspora a.",
+      brand: "Spirit of Haiti Air · Yon konpayi avyon pou dyaspora a, pa dyaspora a.",
       note: "Yon pledj se yon pwomès — pa gen chaj jodi a.",
     },
     toggle: {

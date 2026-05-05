@@ -48,7 +48,7 @@ export function ShareSheet({ shareUrl, composedText, className }: Props) {
     if (!hasNative) return;
     try {
       await navigator.share({
-        title: "Napo Air",
+        title: "Spirit of Haiti Air",
         text: composedText,
         url: shareUrl,
       });
